@@ -38,10 +38,19 @@
 	  var formatSelect = document.getElementById("formatToSend");
 	  var docInput = document.getElementById("finalDoc");
 	  var docInputLabel = document.getElementById("finalDocLabel");
+	  var submitButton = document.getElementById("emailbutton");
 	  if (formatSelect.value === "nocompress") {
               docInput.readOnly = true;
 	  } else {
               docInput.readOnly = false;
+	  }
+
+	  if(formatSelect.value === "pdf") {
+	      submitButton.value = "Convert and Send";
+	  }else if(formatSelect.value === "zip") {
+	      submitButton.value = "Compress and Send";
+	  }else {
+	      submitButton.value = "Send";	      
 	  }
       }
 
@@ -130,7 +139,7 @@
       <label for="email">Email:</label>
       <input type="email" id="email" name="email" required><br><br>
       
-      <input type="submit" value="Submit">
+      <input type="submit" id="emailbutton" value="Submit">
     </form>
 
     <div id="loading-overlay">
