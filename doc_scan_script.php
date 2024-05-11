@@ -3,11 +3,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $docName = $_POST['doc'];
     $format  = $_POST['format'];
+    $dpi = $_POST['dpi'];
 
-    //echo "$email\n";
     //echo "$docName\n";
     
-    $command = "sudo scanimage > scanned_docs/$docName.$format --format $format --mode=color --resolution=300 -p";
+    $command = "sudo scanimage > scanned_docs/$docName.$format --format $format --mode=color --resolution=$dpi -p";
     //echo "$command\n";
     
     // Execute the command

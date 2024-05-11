@@ -59,7 +59,7 @@ if ($status === 0) {
       echo "Failed to send email.";
    }
     // Redirect to scanned file	
-    header("Location: /scanned_docs/$docName.$format");
+    header("Location: /$finaldocNameWithExt");
 } else {
   echo "Error executing command.";
 }

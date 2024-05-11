@@ -60,7 +60,14 @@
 	<option value="png">png</option>
       </select>
       <br><br>
-      
+
+      <label for="dpi">Select dpi:</label>
+      <select name="dpi" id="dpi">
+	<option value="100">100</option>
+	<option value="150">150</option>
+	<option value="200">200</option>
+	<option value="300">300</option>
+      </select>
       <input type="submit" value="scan">
     </form>
     
