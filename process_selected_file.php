@@ -14,18 +14,45 @@ echo "No files selected.";
 return;
 }
 
-// Retrieve selected file names
+// Retrieve fields from the form
 $selectedFiles = $_POST['files'];
-$format = $_POST['format'];
-$finalDocName = $_POST['finalDoc'];
+$format = $_POST['formatToSend'];
+$to = $_POST['email'];
 
+// Initialize some variables
 $folderName  = "scanned_docs/";
+$subject = "Scanned Docs from PrinterPi ";
+$attachments = [];
+
+// Processing if no compression is requested
+if($format === "nocompress") {
+  foreach ($selectedFiles as $file) {
+  	  // Sanitize file name to prevent shell injection
+	  $sanitizedFileName = trim(escapeshellarg($file), "'\"");
+	  $attachments[] = ['path' => $folderName.$sanitizedFileName, 'name' => $sanitizedFileName];
+  }
+
+
+  if (sendEmailWithAttachments($to, $subject, $attachments)) {
+     echo "Email sent successfully.";
+  } else {
+     echo "Failed to send email.";
+  }
+  return;
+}
+
+
+$finalDocName = $_POST['finalDoc'];
 $finalDocNameWithExt =  $folderName . $finalDocName . "." .$format;
+
+$subject .= $finalDocName;
+$attachments[] = ['path' => $finalDocNameWithExt, 'name' => $finalDocName.".".$format];
+
 
 // Construct shell command using selected file names
 if ($format === "pdf") {
      $command = "sudo convert ";
-   } else {
+   } else if($format === "zip"){
      $command = "sudo zip $finalDocNameWithExt ";
 }
 
@@ -48,18 +75,13 @@ exec($command, $output, $status);
 
 // Check if command execution was successful
 if ($status === 0) {
-   $to = $_POST['email'];
-   $subject = "Scanned Docs from PrinterPi: $finalDocName ";
-   $attachmentFilePath = $finalDocNameWithExt;
-   $attachmentFileName = $finalDocName . $format;
-
-   if (sendEmailWithAttachment($to, $subject, $attachmentFilePath, $attachmentFileName)) {
+   if (sendEmailWithAttachment($to, $subject, $attachments)) {
        echo "Email sent successfully.";
    } else {
       echo "Failed to send email.";
    }
     // Redirect to scanned file	
-    header("Location: /$finaldocNameWithExt");
+   header("Location: /$finaldocNameWithExt");
 } else {
   echo "Error executing command.";
 }

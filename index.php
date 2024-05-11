@@ -19,6 +19,11 @@
           text-align: center;
           padding-top: 20%;
       }
+      /* Style for readonly input */
+      input[readonly] {
+	  background-color: #f0f0f0; /* Light gray background color */
+	  color: #666; /* Dark gray text color */
+      }
     </style>
     <script>
       function showLoading() {
@@ -28,6 +33,23 @@
       function hideLoading() {
           document.getElementById("loading-overlay").style.display = "none";
       }
+
+      function handleFormatChange() {
+	  var formatSelect = document.getElementById("formatToSend");
+	  var docInput = document.getElementById("finalDoc");
+	  var docInputLabel = document.getElementById("finalDocLabel");
+	  if (formatSelect.value === "nocompress") {
+              docInput.readOnly = true;
+	  } else {
+              docInput.readOnly = false;
+	  }
+      }
+
+      // Trigger handleFormatChange on page load
+      window.onload = function() {
+	  handleFormatChange();
+      };
+
     </script>
   </head>
 
@@ -94,14 +116,15 @@
       </select>
       <br><br>
       
-      <label for="format">Select format to send:</label>
-      <select name="format" id="format">
+      <label for="formatToSend">Select format to send:</label>
+      <select name="formatToSend" id="formatToSend" onchange="handleFormatChange()">
+	<option value="nocompress">send selected files</option>
 	<option value="zip">compress selected files to zip</option>
 	<option value="pdf">create pdf from selected files</option>
       </select>
       <br><br>
 
-      <label for="finalDoc">Enter document name:</label>
+      <label for="finalDoc" id="finalDocLabel">Enter document name:</label>
       <input type="text" id="finalDoc" name="finalDoc" required><br><br>
 
       <label for="email">Email:</label>
