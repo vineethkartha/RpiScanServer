@@ -92,6 +92,13 @@
       </select>
       <br><br>
 
+      <label for="colorMode">Select mode:</label>
+      <select name="colorMode" id="colorMode">
+	<option value="color">color</option>
+	<option value="gray">B&W</option>
+      </select>
+      <br><br>
+
       <label for="dpi">Select dpi:</label>
       <select name="dpi" id="dpi">
 	<option value="100">100</option>
