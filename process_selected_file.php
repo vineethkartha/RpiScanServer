@@ -75,13 +75,13 @@ exec($command, $output, $status);
 
 // Check if command execution was successful
 if ($status === 0) {
-   if (sendEmailWithAttachment($to, $subject, $attachments)) {
+   if (sendEmailWithAttachments($to, $subject, $attachments)) {
        echo "Email sent successfully.";
    } else {
       echo "Failed to send email.";
    }
     // Redirect to scanned file	
-   header("Location: /$finaldocNameWithExt");
+   header("Location: /$finalDocNameWithExt");
 } else {
   echo "Error executing command.";
 }
