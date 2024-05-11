@@ -1,5 +1,8 @@
 <?php
-	// Check if form is submitted
+
+include 'mailscript.php';
+
+// Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
 echo "Invalid request method.";
 return;
@@ -45,6 +48,16 @@ exec($command, $output, $status);
 
 // Check if command execution was successful
 if ($status === 0) {
+   $to = $_POST['email'];
+   $subject = "Scanned Docs from PrinterPi: $finalDocName ";
+   $attachmentFilePath = $finalDocNameWithExt;
+   $attachmentFileName = $finalDocName . $format;
+
+   if (sendEmailWithAttachment($to, $subject, $attachmentFilePath, $attachmentFileName)) {
+       echo "Email sent successfully.";
+   } else {
+      echo "Failed to send email.";
+   }
     // Redirect to scanned file	
     header("Location: /scanned_docs/$docName.$format");
 } else {
